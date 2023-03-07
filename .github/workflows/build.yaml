@@ -1,5 +1,8 @@
 name: PlatformIO CI
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:
@@ -38,5 +41,4 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            build/*
+          files: build/*
