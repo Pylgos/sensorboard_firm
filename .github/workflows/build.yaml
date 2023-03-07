@@ -1,0 +1,42 @@
+name: PlatformIO CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+            .cache
+          key: ${{ runner.os }}-pio
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Build PlatformIO Project
+        run: |
+          mkdir -p build
+          for i in {0..9}; do
+            env_name="id_${i}_$((i+1))"
+            pio run -e $env_name
+            mv ".pio/build/${env_name}/firmware.bin" build/sensorboard_firm_${env_name}.bin
+          done
+      
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/*
