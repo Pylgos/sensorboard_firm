@@ -42,14 +42,6 @@ int main() {
     DigitalIn(PB_6),
     DigitalIn(PB_5)};
 
-  std::array<Debouncer, 5> switches_deb = {
-    Debouncer(switches[0], Q_MAX),
-    Debouncer(switches[1], Q_MAX),
-    Debouncer(switches[2], Q_MAX),
-    Debouncer(switches[3], Q_MAX),
-    Debouncer(switches[4], Q_MAX)
-  };
-
   CANMessage msg1, msg2;
   msg1.id = CAN_ID_1;
   msg2.id = CAN_ID_2;
@@ -69,8 +61,7 @@ int main() {
 
     for (auto i = 0u; i < 5; i++) {
       now_enc[i] = encoders[i].getPulses();
-      switches_deb[i].update();
-      now_sw[i] = switches_deb[i].read();
+      now_sw[i] = switches[i].read();
     }
 
     if (elapsed > period) {
