@@ -28,6 +28,9 @@ jobs:
 
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
+      
+      - name: Install Build Dependency
+        run: pip3 install intelhex==2.3.0 jinja2==3.1.2 pyelftools==0.25 beautifulsoup4==4.11.1 future==0.18.1 prettytable==3.3.0 jsonschema==4.14.0 six==1.16.0
 
       - name: Build PlatformIO Project
         run: |
